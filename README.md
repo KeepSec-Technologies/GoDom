@@ -89,13 +89,13 @@ Run the GoDom tool with the required flags:
 Flags:
 
 ```text
--s or --smtp-server: SMTP server for sending emails.
--p or --smtp-port: SMTP server port (default: 587).
--u or --smtp-username: Username for SMTP authentication.
--w or --smtp-password: Password for SMTP authentication.
--f or --from-email: Email address to send notifications from.
--t or --to-email: Email address to send notifications to.
--d or --domains-file: Path to the file containing domain names.
+  -s, --smtp-server         SMTP server for sending emails
+  -p, --smtp-port           SMTP server port
+  -u, --smtp-username       Username for SMTP authentication
+  -w, --smtp-password       Password for SMTP authentication
+  -f, --from-email          Email address to send notifications from
+  -t, --to-email            Email address to send notifications to
+  -d, --domains-file        Path to the file containing domain names
 ```
 
 Example:
