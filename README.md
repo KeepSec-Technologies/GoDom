@@ -25,6 +25,7 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 
 - Go 1.20 or higher recommended (for build).
 - Access to an SMTP server for sending emails.
+- (Optional) Making a cronjob out of this is the intended way to use it.
 
 ## Installation
 
