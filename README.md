@@ -29,10 +29,16 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 1. Download the binary with wget:
 
     ```shell
-    wget https://github.com/KeepSec-Technologies/GoDom/releases/download/1.0/godom
+    wget https://github.com/KeepSec-Technologies/GoDom/releases/download/1.0/godom_linux_amd64_1.0.tar.gz
     ```
 
-2. Move it to your /usr/local/bin/ (Optional):
+2. Unpack it with tar
+
+    ```shell
+    tar -xf godom_linux_amd64_1.0.tar.gz
+    ```
+
+3. Move it to your /usr/local/bin/ (Optional):
 
     ```shell
     sudo mv godom /usr/local/bin/godom
@@ -56,7 +62,7 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 4. Build the tool:
 
     ```shell
-    go build -o godom
+    CGO_ENABLED=0 go build -a -installsuffix cgo -o godom .
     ```
 
 ## Usage
@@ -70,7 +76,7 @@ Run the GoDom tool with the required flags:
         --domains-file=<path_to_domains_file>
 ```
 
-### Flags
+Flags:
 
 ```text
 -s, --smtp-server: SMTP server for sending emails.
@@ -82,7 +88,7 @@ Run the GoDom tool with the required flags:
 -d, --domains-file: Path to the file containing domain names.
 ```
 
-### Example
+Example:
 
 ```shell
 ./godom --smtp-server=smtp.example.com --smtp-port=587 \

@@ -21,4 +21,5 @@
 go.work
 
 godom
+*.tar.gz
 domains.txt
