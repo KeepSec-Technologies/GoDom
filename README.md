@@ -26,22 +26,16 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 
 ## Installation
 
-1. Clone the repository:
+1. Download the binary with wget:
 
-    ```bash
-    git clone https://github.com/KeepSec-Technologies/GoDom
+    ```shell
+    wget https://github.com/KeepSec-Technologies/GoDom/releases/download/1.0/godom
     ```
 
-2. Navigate to the cloned directory:
+2. Move it to your /usr/local/bin/ (Optional):
 
-    ```bash
-    cd GoDom
-    ```
-
-3. Build the tool:
-
-    ```bash
-    go build -o godom
+    ```shell
+    sudo mv godom /usr/local/bin/godom
     ```
 
 ## Building from Source
@@ -49,19 +43,19 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 1. Ensure you have Go installed on your system. You can download Go from [here](https://golang.org/dl/).
 2. Clone the repository:
 
-    ```bash
+    ```shell
     git clone https://github.com/KeepSec-Technologies/GoDom
     ```
 
 3. Navigate to the cloned directory:
 
-    ```bash
+    ```shell
     cd GoDom
     ```
 
 4. Build the tool:
 
-    ```bash
+    ```shell
     go build -o godom
     ```
 
@@ -69,7 +63,7 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 
 Run the GoDom tool with the required flags:
 
-```bash
+```shell
 ./godom --smtp-server=<smtp_server> --smtp-port=<smtp_port> \
         --smtp-username=<username> --smtp-password=<password> \
         --from-email=<from_email> --to-email=<to_email> \
@@ -90,7 +84,7 @@ Run the GoDom tool with the required flags:
 
 ### Example
 
-```bash
+```shell
 ./godom --smtp-server=smtp.example.com --smtp-port=587 \
         --smtp-username=user@example.com --smtp-password=pass \
         --from-email=<noreply@example.com> --to-email=<admin@example.com> \
