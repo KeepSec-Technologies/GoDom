@@ -101,7 +101,7 @@ Flags:
 Example:
 
 ```shell
-./godom -s smtp.example.com -p 587 -u user@example.com -w password123 -f noreply@example.com -t admin@example.com -d domains.txt
+./godom -s smtp.example.com -p 587 -u user@example.com -w password123 -f godom@example.com -t admin@example.com -d domains.txt
 ```
 
 ## Contributing
