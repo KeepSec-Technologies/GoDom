@@ -80,31 +80,28 @@ example.ca
 Run the GoDom tool with the required flags:
 
 ```shell
-./godom --smtp-server=<smtp_server> --smtp-port=<smtp_port> \
-        --smtp-username=<username> --smtp-password=<password> \
-        --from-email=<from_email> --to-email=<to_email> \
-        --domains-file=<path_to_domains_file>
+./godom --smtp-server <smtp_server> --smtp-port <smtp_port> \
+        --smtp-username <username> --smtp-password <password> \
+        --from-email <from_email> --to-email <to_email> \
+        --domains-file <path_to_domains_file>
 ```
 
 Flags:
 
 ```text
--s, --smtp-server: SMTP server for sending emails.
--p, --smtp-port: SMTP server port (default: 587).
--u, --smtp-username: Username for SMTP authentication.
--w, --smtp-password: Password for SMTP authentication.
--f, --from-email: Email address to send notifications from.
--t, --to-email: Email address to send notifications to.
--d, --domains-file: Path to the file containing domain names.
+-s or --smtp-server: SMTP server for sending emails.
+-p or --smtp-port: SMTP server port (default: 587).
+-u or --smtp-username: Username for SMTP authentication.
+-w or --smtp-password: Password for SMTP authentication.
+-f or --from-email: Email address to send notifications from.
+-t or --to-email: Email address to send notifications to.
+-d or --domains-file: Path to the file containing domain names.
 ```
 
 Example:
 
 ```shell
-./godom -s=smtp.example.com -p587 \
-        -u=user@example.com -w=password123 \
-        -f=noreply@example.com -t=admin@example.com \
-        -d=domains.txt
+./godom -s smtp.example.com -p 587 -u user@example.com -w password123 -f noreply@example.com -t admin@example.com -d domains.txt
 ```
 
 ## Contributing
