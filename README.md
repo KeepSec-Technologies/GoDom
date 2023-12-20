@@ -70,6 +70,13 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 
 ## Usage
 
+Put your domains in a text file, eg: domains.txt:
+```text
+example.com
+example.org
+example.ca
+```
+
 Run the GoDom tool with the required flags:
 
 ```shell
@@ -94,10 +101,10 @@ Flags:
 Example:
 
 ```shell
-./godom --smtp-server=smtp.example.com --smtp-port=587 \
-        --smtp-username=user@example.com --smtp-password=pass \
-        --from-email=<noreply@example.com> --to-email=<admin@example.com> \
-        --domains-file=domains.txt
+./godom -s=smtp.example.com -p587 \
+        -u=user@example.com -w=password123 \
+        -f=noreply@example.com -t=admin@example.com \
+        -d=domains.txt
 ```
 
 ## Contributing
