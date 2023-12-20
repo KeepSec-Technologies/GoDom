@@ -16,10 +16,10 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 
 ## Features
 
-- Check domain validity and SSL certificate expiration for a list of domains.
-- Send email notifications with domain and SSL expiration details.
+- Check domain validity and SSL certificate expiration from a list of domains.
+- Send email notifications with domain validity and SSL expiration details.
 - Supports reading a list of domains from a file.
-- Configurable via command-line flags for flexibility and ease of use.
+- Configurable via command-line arguments for flexibility and ease of use.
 
 ## Requirements
 
