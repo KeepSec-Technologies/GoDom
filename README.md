@@ -1,4 +1,6 @@
-![godom-logo-small](https://github.com/KeepSec-Technologies/GoDom/assets/108779415/0b06ce8c-749d-4171-b455-326719a51a05)
+<p align="center">
+ <img src="https://github.com/KeepSec-Technologies/GoDom/assets/108779415/430a7dd3-be24-4f32-8c12-818bc2ad26bb"
+</p>
 
 # GoDom - Domain and SSL Expiration Checker
 
