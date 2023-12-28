@@ -3,6 +3,9 @@
 </p>
 
 # GoDom - Domain and SSL Expiration Checker
+![License](https://img.shields.io/github/license/KeepSec-Technologies/GoDom)
+![GitHub issues](https://img.shields.io/github/issues-raw/KeepSec-Technologies/GoDom)
+![GitHub go.mod Go version (branch & subdirectory of monorepo)](https://img.shields.io/github/go-mod/go-version/KeepSec-Technologies/GoDom/main)
 
 GoDom is a command-line tool written in Go, designed to check the validity of domain names and SSL certificates expirations, and then send notifications via email. It's an efficient way to stay ahead of domain and SSL renewals, ensuring your websites and services remain uninterrupted.
 
