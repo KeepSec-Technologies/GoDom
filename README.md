@@ -99,6 +99,7 @@ Flags:
   -u, --smtp-username       Username for SMTP authentication
   -w, --smtp-password       Password for SMTP authentication
   -f, --from-email          Email address to send notifications from
+  -c, --config              Path to the SMTP json config file which replaces the above arguments
   -t, --to-email            Email address to send notifications to
   -d, --domains-file        Path to the file containing domain names
 ```
