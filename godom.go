@@ -17,18 +17,20 @@ import (
 var (
 	// Long-form flags
 	smtpServer  string
-	smtpPort    string
+	smtpPort    int
 	username    string
 	password    string
+	configFile  string
 	fromEmail   string
 	toEmail     string
 	domainsFile string
 
 	// Short-form flags
 	smtpServerShort  string
-	smtpPortShort    string
+	smtpPortShort    int
 	usernameShort    string
 	passwordShort    string
+	configFileShort  string
 	fromEmailShort   string
 	toEmailShort     string
 	domainsFileShort string
@@ -37,18 +39,20 @@ var (
 func init() {
 	// Long-form flags
 	flag.StringVar(&smtpServer, "smtp-server", "", "SMTP server for sending emails")
-	flag.StringVar(&smtpPort, "smtp-port", "587", "SMTP server port")
+	flag.IntVar(&smtpPort, "smtp-port", 587, "SMTP server port")
 	flag.StringVar(&username, "smtp-username", "", "Username for SMTP authentication")
 	flag.StringVar(&password, "smtp-password", "", "Password for SMTP authentication")
+	flag.StringVar(&configFile, "config", "", "Path to the SMTP config file")
 	flag.StringVar(&fromEmail, "from-email", "", "Email address to send notifications from")
 	flag.StringVar(&toEmail, "to-email", "", "Email address to send notifications to")
 	flag.StringVar(&domainsFile, "domains-file", "", "Path to the file containing domain names")
 
 	// Short-form flags
 	flag.StringVar(&smtpServerShort, "s", "", "SMTP server for sending emails (short)")
-	flag.StringVar(&smtpPortShort, "p", "587", "SMTP server port (short)")
+	flag.IntVar(&smtpPortShort, "p", 587, "SMTP server port (short)")
 	flag.StringVar(&usernameShort, "u", "", "Username for SMTP authentication (short)")
 	flag.StringVar(&passwordShort, "w", "", "Password for SMTP authentication (short)")
+	flag.StringVar(&configFileShort, "c", "", "Path to the SMTP config file (short)")
 	flag.StringVar(&fromEmailShort, "f", "", "Email address to send notifications from (short)")
 	flag.StringVar(&toEmailShort, "t", "", "Email address to send notifications to (short)")
 	flag.StringVar(&domainsFileShort, "d", "", "Path to the file containing domain names (short)")
@@ -61,7 +65,7 @@ func main() {
 	if smtpServerShort != "" {
 		smtpServer = smtpServerShort
 	}
-	if smtpPortShort != "" {
+	if smtpPortShort != 587 {
 		smtpPort = smtpPortShort
 	}
 	if usernameShort != "" {
@@ -69,6 +73,9 @@ func main() {
 	}
 	if passwordShort != "" {
 		password = passwordShort
+	}
+	if configFileShort != "" {
+		configFile = configFileShort
 	}
 	if fromEmailShort != "" {
 		fromEmail = fromEmailShort
@@ -78,6 +85,31 @@ func main() {
 	}
 	if domainsFileShort != "" {
 		domainsFile = domainsFileShort
+	}
+
+	// Load config from file if provided
+	if configFile != "" {
+		config, err := loadConfig(configFile)
+		if err != nil {
+			log.Fatalf("Error loading config file: %v", err)
+		}
+
+		// Override flags with config file values if set
+		if config.SMTPServer != "" {
+			smtpServer = config.SMTPServer
+		}
+		if config.SMTPPort != 0 {
+			smtpPort = config.SMTPPort
+		}
+		if config.SMTPUsername != "" {
+			username = config.SMTPUsername
+		}
+		if config.SMTPPassword != "" {
+			password = config.SMTPPassword
+		}
+		if config.FromEmail != "" {
+			fromEmail = config.FromEmail
+		}
 	}
 
 	// Check if required flags are missing
@@ -95,7 +127,8 @@ func main() {
 		domainExpDate := checkDomainExpiration(domain)
 
 		message := fmt.Sprintf("Domain: %s\nSSL Expiration: %s\nDomain Expiration: %s\n\n", domain, sslExpDate, domainExpDate)
-		sendEmail(fromEmail, toEmail, "Domain and SSL Check Results", message)
+		currentTime := time.Now()
+		sendEmail(fromEmail, toEmail, fmt.Sprintf("%s - GoDom Results %s", domain, currentTime.Format("2006-01-02")), message)
 	}
 
 	fmt.Println("Execution complete")
@@ -109,6 +142,7 @@ func usage() {
 	fmt.Fprintln(os.Stderr, "  -u, --smtp-username       Username for SMTP authentication")
 	fmt.Fprintln(os.Stderr, "  -w, --smtp-password       Password for SMTP authentication")
 	fmt.Fprintln(os.Stderr, "  -f, --from-email          Email address to send notifications from")
+	fmt.Fprintln(os.Stderr, "  -c, --config              Path to the SMTP json config file which replaces the above arguments")
 	fmt.Fprintln(os.Stderr, "  -t, --to-email            Email address to send notifications to")
 	fmt.Fprintln(os.Stderr, "  -d, --domains-file        Path to the file containing domain names")
 	fmt.Fprintln(os.Stderr, "")
@@ -201,7 +235,7 @@ func sendEmail(from, to, subject, body string) {
 		"\r\n" +
 		body + "\r\n")
 
-	err := smtp.SendMail(smtpServer+":"+smtpPort, auth, from, []string{to}, msg)
+	err := smtp.SendMail(fmt.Sprintf("%s:%d", smtpServer, smtpPort), auth, from, []string{to}, msg)
 	if err != nil {
 		log.Fatal(err)
 	}
