@@ -37,13 +37,13 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
 1. Download the binary with wget:
 
     ```shell
-    wget https://github.com/KeepSec-Technologies/GoDom/releases/download/1.0/godom_linux_amd64_1.0.tar.gz
+    wget https://github.com/KeepSec-Technologies/GoDom/releases/download/1.1/godom_linux_amd64_1.1.tar.gz
     ```
 
 2. Unpack it with tar
 
     ```shell
-    tar -xf godom_linux_amd64_1.0.tar.gz
+    tar -xf godom_linux_amd64_1.1.tar.gz
     ```
 
 3. Move it to your /usr/local/bin/ (Optional):
