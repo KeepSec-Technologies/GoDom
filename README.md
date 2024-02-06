@@ -51,6 +51,13 @@ GoDom is a command-line tool written in Go, designed to check the validity of do
     ```shell
     sudo mv godom /usr/local/bin/godom
     ```
+4. I recommend making it a cronjob like so (Optional):
+
+    Put this in '/etc/cron.d/godom-cron':
+   ```shell
+   0 0 1 * * root /usr/local/bin/godom -c path/to/config.json -t admin@example.com -d path/to/domains.txt
+   ```
+    This will run the first of every month.
 
 ## Building from Source
 
