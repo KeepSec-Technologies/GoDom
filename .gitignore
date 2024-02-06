@@ -23,6 +23,7 @@ go.work
 godom
 *.tar.gz
 domains.txt
+config.json
 
 releases/
 build/
