@@ -6,12 +6,12 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net/smtp"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/domainr/whois"
+	"github.com/wneessen/go-mail"
 )
 
 var (
@@ -123,13 +123,13 @@ func main() {
 	}
 
 	for _, domain := range domains {
+		currentTime := time.Now()
+		fmt.Printf("%s - Inspecting %s...\n", currentTime.Format("2006-01-02 15:04:05"), domain)
+
 		sslExpDate := checkSSLExpiration(domain)
 		domainExpDate := checkDomainExpiration(domain)
-		currentTime := time.Now()
 		message := fmt.Sprintf("Domain: %s\nSSL Expiration: %s\nDomain Expiration: %s\n\n", domain, sslExpDate, domainExpDate)
-		fmt.Printf("%s - Inspecting %s... ", currentTime.Format("2006-01-02 15:04:05"), domain)
-		sendEmail(fromEmail, toEmail, fmt.Sprintf("%s - GoDom Results %s", domain, currentTime.Format("2006-01-02")), message)
-		fmt.Printf("%s is done\n", domain)
+		sendEmail(smtpServer, smtpPort, username, password, fromEmail, toEmail, fmt.Sprintf("%s - GoDom Results %s", domain, currentTime.Format("2006-01-02")), message)
 	}
 
 	currentTime := time.Now()
@@ -226,20 +226,56 @@ func parseWhoisOutput(output string) string {
 }
 
 // sendEmail sends an email with the given details
-func sendEmail(from, to, subject string, body string) {
-	// Set up authentication information
-	auth := smtp.PlainAuth("", username, password, smtpServer)
+func sendEmail(smtpServer string, smtpPort int, username string, password string, from string, to string, subject string, body string) error {
 
-	// Email headers and body
-	msg := []byte("From: " + from + "\r\n" +
-		"To: " + to + "\r\n" +
-		"Subject: " + subject + "\r\n" +
-		"\r\n" +
-		body + "\r\n")
-
-	err := smtp.SendMail(fmt.Sprintf("%s:%d", smtpServer, smtpPort), auth, from, []string{to}, msg)
-	if err != nil {
-		// Use log.Fatal to log the error and stop the program
-		log.Fatal(err)
+	// Create a new message
+	m := mail.NewMsg()
+	if err := m.From(from); err != nil {
+		return err
 	}
+
+	// Set recipient(s)
+	if err := m.To(to); err != nil {
+		return err
+	}
+	m.Subject(subject)
+
+	m.SetBodyString(mail.TypeTextPlain, body)
+
+	// Add SSL option if port is 465
+	if smtpPort == 465 {
+		// Create a new client
+		c, err := mail.NewClient(smtpServer, mail.WithPort(smtpPort), mail.WithSMTPAuth(mail.SMTPAuthPlain), mail.WithUsername(username), mail.WithPassword(password), mail.WithSSL())
+		if err != nil {
+			return err
+		}
+		defer c.Close()
+
+		currentTime := time.Now()
+		// Send the email
+		if err := c.DialAndSend(m); err != nil {
+			fmt.Printf("%s - Error sending email: %v\n", currentTime.Format("2006-01-02 15:04:05"), err)
+			return err
+		}
+
+	} else {
+		// Create a new client
+		c, err := mail.NewClient(smtpServer, mail.WithPort(smtpPort), mail.WithSMTPAuth(mail.SMTPAuthPlain), mail.WithUsername(username), mail.WithPassword(password))
+		if err != nil {
+			return err
+		}
+		defer c.Close()
+
+		currentTime := time.Now()
+		// Send the email
+		if err := c.DialAndSend(m); err != nil {
+			fmt.Printf("%s - Error sending email: %v\n", currentTime.Format("2006-01-02 15:04:05"), err)
+			return err
+		}
+
+	}
+
+	currentTime := time.Now()
+	fmt.Printf("%s - Email sent to %s\n", currentTime.Format("2006-01-02 15:04:05"), to)
+	return nil
 }
