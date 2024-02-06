@@ -128,7 +128,7 @@ func main() {
 
 		sslExpDate := checkSSLExpiration(domain)
 		domainExpDate := checkDomainExpiration(domain)
-		message := fmt.Sprintf("Domain: %s\nSSL Expiration: %s\nDomain Expiration: %s\n\n", domain, sslExpDate, domainExpDate)
+		message := fmt.Sprintf("Domain: %s\nDomain Expiration: %s\nSSL Expiration: %s\n\n", domain, domainExpDate, sslExpDate)
 		sendEmail(smtpServer, smtpPort, username, password, fromEmail, toEmail, fmt.Sprintf("%s - GoDom Results %s", domain, currentTime.Format("2006-01-02")), message)
 	}
 

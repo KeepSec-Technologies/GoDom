@@ -104,10 +104,28 @@ Flags:
   -d, --domains-file        Path to the file containing domain names
 ```
 
-Example:
+Examples:
 
 ```shell
 ./godom -s smtp.example.com -p 587 -u user@example.com -w password123 -f godom@example.com -t admin@example.com -d domains.txt
+```
+
+or
+
+```shell
+./godom -c path/to/config.json -t admin@example.com -d domains.txt
+```
+
+Example of json config file to pass to GoDom:
+
+```json
+{
+    "smtp_server": "mail.example.com",
+    "smtp_port": 587,
+    "smtp_username": "user@example.com",
+    "smtp_password": "password123",
+    "from_email": "mail2go@example.com"
+}
 ```
 
 ## Contributing
