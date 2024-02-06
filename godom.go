@@ -125,13 +125,15 @@ func main() {
 	for _, domain := range domains {
 		sslExpDate := checkSSLExpiration(domain)
 		domainExpDate := checkDomainExpiration(domain)
-
-		message := fmt.Sprintf("Domain: %s\nSSL Expiration: %s\nDomain Expiration: %s\n\n", domain, sslExpDate, domainExpDate)
 		currentTime := time.Now()
+		message := fmt.Sprintf("Domain: %s\nSSL Expiration: %s\nDomain Expiration: %s\n\n", domain, sslExpDate, domainExpDate)
+		fmt.Printf("%s - Inspecting %s... ", currentTime.Format("2006-01-02 15:04:05"), domain)
 		sendEmail(fromEmail, toEmail, fmt.Sprintf("%s - GoDom Results %s", domain, currentTime.Format("2006-01-02")), message)
+		fmt.Printf("%s is done\n", domain)
 	}
 
-	fmt.Println("Execution complete")
+	currentTime := time.Now()
+	fmt.Printf("%s - Execution complete", currentTime.Format("2006-01-02 15:04:05"))
 }
 
 func usage() {
@@ -224,7 +226,7 @@ func parseWhoisOutput(output string) string {
 }
 
 // sendEmail sends an email with the given details
-func sendEmail(from, to, subject, body string) {
+func sendEmail(from, to, subject string, body string) {
 	// Set up authentication information
 	auth := smtp.PlainAuth("", username, password, smtpServer)
 
@@ -237,6 +239,7 @@ func sendEmail(from, to, subject, body string) {
 
 	err := smtp.SendMail(fmt.Sprintf("%s:%d", smtpServer, smtpPort), auth, from, []string{to}, msg)
 	if err != nil {
+		// Use log.Fatal to log the error and stop the program
 		log.Fatal(err)
 	}
 }
